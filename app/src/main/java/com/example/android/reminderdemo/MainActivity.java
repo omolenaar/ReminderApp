@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -37,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         mListView = findViewById(R.id.listView_main);
         mNewReminderText = findViewById(R.id.editText_main);
         mReminders = new ArrayList<>();
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mReminders);
-        mListView.setAdapter(mAdapter);
+        //mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mReminders);
+        //mListView.setAdapter(mAdapter);
+        UpdateUI();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -52,16 +54,28 @@ public class MainActivity extends AppCompatActivity {
                 if (!(TextUtils.isEmpty(text))) {
                     mReminders.add(newReminder);
                     //refresh
-                    mAdapter.notifyDataSetChanged();
+                    //replaced "mAdapter.notifyDataSetChanged()"; with
+                    UpdateUI();
                     //clear contents
                     mNewReminderText.setText("");
                 } else {
-                    Snackbar.make(view, "Add reminder", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, R.string.SnackbarReminderHint, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 
             }
         });
+
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mReminders.remove(position);
+                //replaced "mAdapter.notifyDataSetChanged();" with
+                UpdateUI();
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -84,5 +98,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void UpdateUI() {
+        if (mAdapter == null) {
+            mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mReminders);
+            mListView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+
+        }
     }
 }
