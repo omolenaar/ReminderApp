@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
                     UpdateUI();
                     //clear contents
                     mNewReminderText.setText("");
+                    mListView.setSelection(mReminders.size()-1);
+
                 } else {
                     Snackbar.make(view, R.string.SnackbarReminderHint, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
