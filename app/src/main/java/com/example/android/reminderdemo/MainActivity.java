@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         mReminders = new ArrayList<>();
         //mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mReminders);
         //mListView.setAdapter(mAdapter);
+
+        //Could add RecyclerView here:
+        //mRecyclerView = (RecyclerView) findViewById()
+
         UpdateUI();
 
 
@@ -103,11 +108,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void UpdateUI() {
+        /* not needed if you make sure to have created the Adapter in the first place.
+        * Then this routines contains only notifyDataSetChanged statement
+        * so no need for a separate routine*/
+
         if (mAdapter == null) {
             mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mReminders);
             mListView.setAdapter(mAdapter);
+            //mRecyclerView.setAdapter(mRecyclerView);
         } else {
             mAdapter.notifyDataSetChanged();
+            //mReceyvlerView.notifyDataSetChanged();
 
         }
     }
